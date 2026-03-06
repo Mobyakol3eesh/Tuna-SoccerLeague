@@ -12,11 +12,11 @@ public class TeamController : Controller
     }
 
     [HttpGet("teams/MVP/{teamId}")]
-    public ActionResult<Player> GetMostValuablePlayerInTeam(int teamId)
+    public async Task<ActionResult<Player>> GetMostValuablePlayerInTeam(int teamId)
     {
         try
         {
-            var mostValuablePlayer = teamService.GetMostValuablePlayerinTeam(teamId);
+            var mostValuablePlayer = await teamService.GetMostValuablePlayerinTeam(teamId);
             return Ok(mostValuablePlayer);
         }
         catch (Exception ex)
@@ -25,11 +25,11 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams/{id}")]
-    public ActionResult<Team> GetTeamDetailsById(int id)
+    public async Task<ActionResult<Team>> GetTeamDetailsById(int id)
     {
         try
         {
-            var team = teamService.GetTeamDetailsById(id);
+            var team = await teamService.GetTeamDetailsById(id);
             return Ok(team);
         }
         catch (Exception ex)
@@ -38,11 +38,11 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams/teamplayers/{teamId}")]
-    public ActionResult<IEnumerable<Player>> GetAllTeamPlayers(int teamId)
+    public async Task<ActionResult<IEnumerable<Player>>> GetAllTeamPlayers(int teamId)
     {
         try
         {
-            var players = teamService.GetALLTeamPlayers(teamId);
+            var players = await teamService.GetALLTeamPlayers(teamId);
             return Ok(players);
         }
         catch (Exception ex)
@@ -51,22 +51,22 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams")]
-    public ActionResult<IEnumerable<Team>> GetAllTeams()
+    public async Task<ActionResult<IEnumerable<Team>>> GetAllTeams()
     {
-        var teams = teamService.GetAllTeams();
+        var teams = await teamService.GetAllTeams();
         return Ok(teams);
     }
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var teams = teamService.GetAllTeams();
+        var teams = await teamService.GetAllTeams();
         return View(teams);  
     }
 
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
         try
         {
-            var team = teamService.GetTeamDetailsById(id);
+            var team = await teamService.GetTeamDetailsById(id);
             return View(team);
         }
         catch (Exception ex)

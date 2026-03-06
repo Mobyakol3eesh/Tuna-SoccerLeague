@@ -1,57 +1,36 @@
 
+using Microsoft.EntityFrameworkCore;
+
 public class TeamService : ITeamService
 {
    
-    private readonly IPlayerService playerService;
-    private List<Team> teams = new List<Team>
+    
+    
+    FootballContext footballContext;
+    public TeamService(FootballContext footballContext)
     {
-        new Team { Id = 1, Name = "Team A", Points = 10, Players = new List<Player>() },
-        new Team { Id = 2, Name = "Team B", Points = 20, Players = new List<Player>() },
-        new Team { Id = 3, Name = "Team C", Points = 15, Players = new List<Player>() }
-    };
-
-    public TeamService(IPlayerService playerService)
-    {
-        this.playerService = playerService;
         
-        foreach (var team in teams)
-        {
-            team.Players = this.playerService.GetAllPlayers().Where(p => p.TeamId == team.Id).ToList();
-        }
-        playerService.PlayerAdded += OnPlayerAdded;
+        this.footballContext = footballContext;
+
+        
     }
 
-    public IEnumerable<Team> GetAllTeams()
+    public async Task<IEnumerable<Team>> GetAllTeams()
     {
-        return teams;
+        return await footballContext.teams.ToListAsync();
     }
 
 
-    public IEnumerable<Player> GetALLTeamPlayers(int teamId)
+    public async Task<IEnumerable<Player>> GetALLTeamPlayers(int teamId)
     {
-        var team = teams.FirstOrDefault(t => t.Id == teamId);
-        if (team == null)
-        {
-            throw new Exception($"Team with ID {teamId} not found.");
-        }
-        return team.Players;
+        return await footballContext.players.Where(p => p.TeamId == teamId).ToListAsync();
        
     }
     
-    private void OnPlayerAdded(object? sender, PlayerAddedEventArgs e)
+    
+    public async Task<Team> GetTeamDetailsById(int id)
     {
-        var player = e.AddedPlayer;
-
-       
-        var team = teams.FirstOrDefault(t => t.Id == player.TeamId);
-        if (team != null)
-        {
-            team.Players.Add(player);
-        }
-    }
-    public Team GetTeamDetailsById(int id)
-    {
-        var team = teams.FirstOrDefault(t => t.Id == id);
+        var team = await footballContext.teams.Where(t => t.Id == id).Include(t => t.Players).FirstOrDefaultAsync();
         if (team == null)
         {
             throw new Exception($"Team with ID {id} not found.");
@@ -59,9 +38,9 @@ public class TeamService : ITeamService
         return team;
     }
 
-    public Player GetMostValuablePlayerinTeam(int teamID)
+    public async Task<Player> GetMostValuablePlayerinTeam(int teamID)
     {
-        var team = teams.FirstOrDefault(t => t.Id == teamID);
+        var team = await footballContext.teams.Where(t => t.Id == teamID).Include(t => t.Players).FirstOrDefaultAsync();
         if (team == null)
         {
             throw new Exception($"Team with ID {teamID} not found.");

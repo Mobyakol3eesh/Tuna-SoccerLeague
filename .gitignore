@@ -4,6 +4,7 @@ obj/
 out/
 build/
 publish/
+.env
 
 # User secrets
 appsettings.json

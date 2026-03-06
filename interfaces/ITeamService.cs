@@ -2,12 +2,12 @@
 
 public interface ITeamService
 {
-    IEnumerable<Player> GetALLTeamPlayers(int teamId);
+    Task<IEnumerable<Player>> GetALLTeamPlayers(int teamId);
 
-    Team GetTeamDetailsById(int id);
-    Player GetMostValuablePlayerinTeam(int teamId);
+    Task<Team> GetTeamDetailsById(int id);
+    Task<Player> GetMostValuablePlayerinTeam(int teamId);
 
-    IEnumerable<Team> GetAllTeams();
+    Task<IEnumerable<Team>> GetAllTeams();
 
 
     

@@ -12,18 +12,18 @@ public class PlayerController : Controller
     }
 
     [HttpGet("players")]
-    public ActionResult<IEnumerable<Player>> GetAllPlayers()
+    public async Task<ActionResult<IEnumerable<Player>>> GetAllPlayers()
     {
-        var players = playerService.GetAllPlayers();
+        var players = await playerService.GetAllPlayers();
         return Ok(players);
     }
 
     [HttpGet("players/{id}")]
-    public ActionResult<Player> GetPlayerDetailsById(int id)
+    public async Task<ActionResult<Player>> GetPlayerDetailsById(int id)
     {
         try
         {
-            var player = playerService.GetPlayerDetailsById(id);
+            var player = await playerService.GetPlayerDetailsById(id);
             return Ok(player);
         }
         catch (Exception ex)
@@ -33,11 +33,11 @@ public class PlayerController : Controller
 
     }
     [HttpPost("players")]
-    public ActionResult AddPlayer([FromBody] Player player)
+    public async Task<ActionResult> AddPlayer([FromBody] Player player)
     {
         try
         {
-            playerService.AddPlayer(player.Name, player.MarketValue, player.TeamId);
+            await playerService.AddPlayer(player.Name, player.MarketValue, player.TeamId);
             return Ok("Player added successfully.");
         }
         catch (Exception ex)
@@ -46,17 +46,17 @@ public class PlayerController : Controller
         }
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var players = playerService.GetAllPlayers();
+        var players = await playerService.GetAllPlayers();
         return View(players);  
     }
 
-    public IActionResult Details(int id)
+    public async Task<IActionResult> Details(int id)
     {
         try
         {
-            var player = playerService.GetPlayerDetailsById(id);
+            var player = await playerService.GetPlayerDetailsById(id);
             return View(player);
         }
         catch (Exception )
