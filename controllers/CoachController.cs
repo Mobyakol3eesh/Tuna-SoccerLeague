@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -11,6 +12,7 @@ public class CoachController : Controller
     }
 
     [HttpGet("coaches")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get all coaches", Description = "Returns a list of all coaches.")]
     public async Task<ActionResult<IEnumerable<CoachReadDto>>> GetAllCoaches()
     {
@@ -19,6 +21,7 @@ public class CoachController : Controller
     }
 
     [HttpGet("coaches/{id}")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get coach by id", Description = "Returns coach details by id.")]
     public async Task<ActionResult<CoachReadDto>> GetCoachDetailsById(int id)
     {
@@ -34,9 +37,15 @@ public class CoachController : Controller
     }
 
     [HttpPost("coaches")]
+    [Authorize(Roles = "Admin")]
     [SwaggerOperation(Summary = "Create coach", Description = "Creates a new coach record.")]
     public async Task<ActionResult> AddCoach([FromBody] CreateCoachDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
         try
         {
             await coachService.AddCoach(dto);
@@ -49,9 +58,15 @@ public class CoachController : Controller
     }
 
     [HttpPut("coaches/{id}")]
+    [Authorize(Roles = "Admin")]
     [SwaggerOperation(Summary = "Update coach", Description = "Updates an existing coach by id.")]
     public async Task<ActionResult> UpdateCoach(int id, [FromBody] UpdateCoachDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
         try
         {
             await coachService.UpdateCoach(id, dto);

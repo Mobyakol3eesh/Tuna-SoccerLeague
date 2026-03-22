@@ -1,5 +1,6 @@
 
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -13,6 +14,7 @@ public class PlayerController : Controller
     }
 
     [HttpGet("players")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get all players", Description = "Returns a list of all players with their basic details and team name.")]
     public async Task<ActionResult<IEnumerable<PlayerReadDto>>> GetAllPlayers()
     {
@@ -21,6 +23,7 @@ public class PlayerController : Controller
     }
 
     [HttpGet("players/{id}")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get player by id", Description = "Returns a single player's details by id.")]
     public async Task<ActionResult<PlayerReadDto>> GetPlayerDetailsById(int id)
     {
@@ -36,9 +39,15 @@ public class PlayerController : Controller
 
     }
     [HttpPost("players")]
+    [Authorize(Roles = "Admin")]
     [SwaggerOperation(Summary = "Create player", Description = "Creates a new player record.")]
     public async Task<ActionResult> AddPlayer([FromBody] CreatePlayerDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
         try
         {
             await playerService.AddPlayer(dto);
@@ -51,9 +60,15 @@ public class PlayerController : Controller
     }
 
     [HttpPut("players/{id}")]
+    [Authorize(Roles = "Admin")]
     [SwaggerOperation(Summary = "Update player", Description = "Updates an existing player by id.")]
     public async Task<ActionResult> UpdatePlayer(int id, [FromBody] UpdatePlayerDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
         try
         {
             await playerService.UpdatePlayer(id, dto);
@@ -66,6 +81,7 @@ public class PlayerController : Controller
     }
 
     [HttpGet("players/player-stats")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get all player stats", Description = "Returns all player statistics entries.")]
     public async Task<ActionResult<IEnumerable<PlayerStatsReadDto>>> GetAllPlayerStats()
     {
@@ -74,6 +90,7 @@ public class PlayerController : Controller
     }
 
     [HttpGet("players/player-stats/{id}")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get player stats by id", Description = "Returns one player stats record by id.")]
     public async Task<ActionResult<PlayerStatsReadDto>> GetPlayerStatsById(int id)
     {
@@ -89,9 +106,15 @@ public class PlayerController : Controller
     }
 
     [HttpPost("players/player-stats")]
+    [Authorize(Roles = "Admin")]
     [SwaggerOperation(Summary = "Create player stats", Description = "Creates a new player stats record for a specific player and match.")]
     public async Task<ActionResult> AddPlayerStats([FromBody] CreatePlayerStatsDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
         try
         {
             await playerService.AddPlayerStats(dto);
@@ -104,9 +127,15 @@ public class PlayerController : Controller
     }
 
     [HttpPut("players/player-stats/{id}")]
+    [Authorize(Roles = "Admin")]
     [SwaggerOperation(Summary = "Update player stats", Description = "Updates an existing player stats record by id.")]
     public async Task<ActionResult> UpdatePlayerStats(int id, [FromBody] UpdatePlayerStatsDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
         try
         {
             await playerService.UpdatePlayerStats(id, dto);

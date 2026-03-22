@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -11,6 +12,7 @@ public class MatchController : Controller
 	}
 
 	[HttpGet("matches")]
+	[Authorize(Roles = "User")]
 	[SwaggerOperation(Summary = "Get all matches", Description = "Returns a list of all matches.")]
 	public async Task<ActionResult<IEnumerable<MatchReadDto>>> GetAllMatches()
 	{
@@ -19,6 +21,7 @@ public class MatchController : Controller
 	}
 
 	[HttpGet("matches/{id}")]
+	[Authorize(Roles = "User")]
 	[SwaggerOperation(Summary = "Get match by id", Description = "Returns match details by id.")]
 	public async Task<ActionResult<MatchReadDto>> GetMatchDetailsById(int id)
 	{
@@ -34,9 +37,15 @@ public class MatchController : Controller
 	}
 
 	[HttpPost("matches")]
+	[Authorize(Roles = "Admin")]
 	[SwaggerOperation(Summary = "Create match", Description = "Creates a new match and related match-team entry.")]
 	public async Task<ActionResult> CreateMatch([FromBody] CreateMatchDto dto)
 	{
+		if (!ModelState.IsValid)
+		{
+			return ValidationProblem(ModelState);
+		}
+
 		try
 		{
 			await matchService.CreateMatch(dto);
@@ -49,9 +58,15 @@ public class MatchController : Controller
 	}
 
 	[HttpPut("matches/{id}")]
+	[Authorize(Roles = "Admin")]
 	[SwaggerOperation(Summary = "Update match", Description = "Updates an existing match and score information by id.")]
 	public async Task<ActionResult> UpdateMatch(int id, [FromBody] UpdateMatchDto dto)
 	{
+		if (!ModelState.IsValid)
+		{
+			return ValidationProblem(ModelState);
+		}
+
 		try
 		{
 			await matchService.UpdateMatch(id, dto);

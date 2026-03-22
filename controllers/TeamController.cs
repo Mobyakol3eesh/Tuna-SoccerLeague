@@ -1,5 +1,6 @@
 
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -13,6 +14,7 @@ public class TeamController : Controller
         }
 
     [HttpGet("teams/MVP/{teamId}")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get team MVP", Description = "Returns the most valuable player in a team.")]
     public async Task<ActionResult<PlayerReadDto>> GetMostValuablePlayerInTeam(int teamId)
     {
@@ -27,6 +29,7 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams/{id}")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get team by id", Description = "Returns a single team with players and coach info.")]
     public async Task<ActionResult<TeamReadDto>> GetTeamDetailsById(int id)
     {
@@ -42,9 +45,15 @@ public class TeamController : Controller
         }
     }
     [HttpPost("teams")]
+    [Authorize(Roles = "Admin")]
     [SwaggerOperation(Summary = "Create team", Description = "Creates a new team.")]
     public async Task<ActionResult> CreateTeam([FromBody] CreateTeamDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
         try
         {
             await teamService.CreateTeam(dto);
@@ -57,9 +66,15 @@ public class TeamController : Controller
     }
 
     [HttpPut("teams/{id}")]
+    [Authorize(Roles = "Admin")]
     [SwaggerOperation(Summary = "Update team", Description = "Updates team details by id.")]
     public async Task<ActionResult> UpdateTeam(int id, [FromBody] UpdateTeamDto dto)
     {
+        if (!ModelState.IsValid)
+        {
+            return ValidationProblem(ModelState);
+        }
+
         try
         {
             await teamService.UpdateTeam(id, dto);
@@ -72,6 +87,7 @@ public class TeamController : Controller
     }
 
     [HttpGet("teams/team-matches/{teamId}")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get team matches", Description = "Returns all matches where the team played as home or away.")]
     public async Task<ActionResult<IEnumerable<MatchReadDto>>> GetAllTeamMatches(int teamId)
     {
@@ -86,6 +102,7 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams/teamplayers/{teamId}")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get team players", Description = "Returns all players for a specific team.")]
     public async Task<ActionResult<IEnumerable<PlayerReadDto>>> GetAllTeamPlayers(int teamId)
     {
@@ -100,6 +117,7 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams")]
+    [Authorize(Roles = "User")]
     [SwaggerOperation(Summary = "Get all teams", Description = "Returns a list of all teams.")]
     public async Task<ActionResult<IEnumerable<TeamReadDto>>> GetAllTeams()
     {

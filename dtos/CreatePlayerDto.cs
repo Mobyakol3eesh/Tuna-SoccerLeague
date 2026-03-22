@@ -5,6 +5,7 @@ public class CreatePlayerDto
    
    [MaxLength(100, ErrorMessage = "Name cannot exceed 100 characters."), Required(ErrorMessage = "Name is required.")]
     public string Name { get; set; } = string.Empty;
+    [Range(0, int.MaxValue, ErrorMessage = "MarketValue must be a non-negative integer.")]
     public int MarketValue { get; set; }
 
     [Range(16, 50, ErrorMessage = "Age must be between 16 and 50.")]
