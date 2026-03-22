@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace web_assignment.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,7 @@ namespace web_assignment.Migrations
                 name: "Matches",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Location = table.Column<string>(type: "longtext", nullable: false)
@@ -27,7 +27,7 @@ namespace web_assignment.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Matches", x => x.ID);
+                    table.PrimaryKey("PK_Matches", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -77,8 +77,11 @@ namespace web_assignment.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     MatchId = table.Column<int>(type: "int", nullable: false),
-                    TeamId = table.Column<int>(type: "int", nullable: false),
-                    Score = table.Column<int>(type: "int", nullable: false)
+                    HomeTeamId = table.Column<int>(type: "int", nullable: false),
+                    AwayTeamId = table.Column<int>(type: "int", nullable: false),
+                    HomeTeamScore = table.Column<int>(type: "int", nullable: false),
+                    AwayTeamScore = table.Column<int>(type: "int", nullable: false),
+                    TeamId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,14 +90,25 @@ namespace web_assignment.Migrations
                         name: "FK_MatchTeams_Matches_MatchId",
                         column: x => x.MatchId,
                         principalTable: "Matches",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MatchTeams_Teams_AwayTeamId",
+                        column: x => x.AwayTeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_MatchTeams_Teams_HomeTeamId",
+                        column: x => x.HomeTeamId,
+                        principalTable: "Teams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_MatchTeams_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -108,6 +122,8 @@ namespace web_assignment.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Age = table.Column<int>(type: "int", nullable: false),
                     MarketValue = table.Column<int>(type: "int", nullable: false),
+                    Position = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     TeamId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -141,7 +157,7 @@ namespace web_assignment.Migrations
                         name: "FK_PlayerStats_Matches_MatchId",
                         column: x => x.MatchId,
                         principalTable: "Matches",
-                        principalColumn: "ID",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PlayerStats_Players_PlayerId",
@@ -155,7 +171,18 @@ namespace web_assignment.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Coaches_TeamId",
                 table: "Coaches",
-                column: "TeamId");
+                column: "TeamId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MatchTeams_AwayTeamId",
+                table: "MatchTeams",
+                column: "AwayTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MatchTeams_HomeTeamId",
+                table: "MatchTeams",
+                column: "HomeTeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MatchTeams_MatchId",
@@ -180,7 +207,8 @@ namespace web_assignment.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PlayerStats_PlayerId",
                 table: "PlayerStats",
-                column: "PlayerId");
+                column: "PlayerId",
+                unique: true);
         }
 
         /// <inheritdoc />

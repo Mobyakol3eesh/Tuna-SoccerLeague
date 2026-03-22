@@ -1,35 +1,25 @@
 
 
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 public class TeamController : Controller
 {
-    private readonly ITeamService teamService;
+        private readonly ITeamService teamService;
 
-    public TeamController(ITeamService teamService)
-    {
-        this.teamService = teamService;
-    }
+        public TeamController(ITeamService teamService)
+        {
+            this.teamService = teamService;
+        }
 
     [HttpGet("teams/MVP/{teamId}")]
+    [SwaggerOperation(Summary = "Get team MVP", Description = "Returns the most valuable player in a team.")]
     public async Task<ActionResult<PlayerReadDto>> GetMostValuablePlayerInTeam(int teamId)
     {
         try
         {
-            var mostValuablePlayer = await teamService.GetMostValuablePlayerinTeam(teamId);
-            var dto = new PlayerReadDto
-            {
-                Id = mostValuablePlayer.Id,
-                Name = mostValuablePlayer.Name,
-                MarketValue = mostValuablePlayer.MarketValue,
-                TeamReadDto = new TeamReadDto
-                {
-                    Id = mostValuablePlayer.TeamId,
-                    Name = string.Empty,
-                    Points = null
-                }
-            };
-            return Ok(dto);
+            var mostValuablePlayerdto = await teamService.GetMostValuablePlayerinTeam(teamId);
+            return Ok(mostValuablePlayerdto);
         }
         catch (Exception ex)
         {
@@ -37,18 +27,58 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams/{id}")]
+    [SwaggerOperation(Summary = "Get team by id", Description = "Returns a single team with players and coach info.")]
     public async Task<ActionResult<TeamReadDto>> GetTeamDetailsById(int id)
     {
         try
         {
             var team = await teamService.GetTeamDetailsById(id);
-            var dto = new TeamReadDto
-            {
-                Id = team.Id,
-                Name = team.Name,
-                Points = team.Points
-            };
-            return Ok(dto);
+            
+            return Ok(team);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+    [HttpPost("teams")]
+    [SwaggerOperation(Summary = "Create team", Description = "Creates a new team.")]
+    public async Task<ActionResult> CreateTeam([FromBody] CreateTeamDto dto)
+    {
+        try
+        {
+            await teamService.CreateTeam(dto);
+            return Ok("Team created successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.ToClientMessage());
+        }
+    }
+
+    [HttpPut("teams/{id}")]
+    [SwaggerOperation(Summary = "Update team", Description = "Updates team details by id.")]
+    public async Task<ActionResult> UpdateTeam(int id, [FromBody] UpdateTeamDto dto)
+    {
+        try
+        {
+            await teamService.UpdateTeam(id, dto);
+            return Ok("Team updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.ToClientMessage());
+        }
+    }
+
+    [HttpGet("teams/team-matches/{teamId}")]
+    [SwaggerOperation(Summary = "Get team matches", Description = "Returns all matches where the team played as home or away.")]
+    public async Task<ActionResult<IEnumerable<MatchReadDto>>> GetAllTeamMatches(int teamId)
+    {
+        try
+        {
+            var matches = await teamService.GetTeamMatches(teamId);
+            return Ok(matches);
         }
         catch (Exception ex)
         {
@@ -56,24 +86,13 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams/teamplayers/{teamId}")]
+    [SwaggerOperation(Summary = "Get team players", Description = "Returns all players for a specific team.")]
     public async Task<ActionResult<IEnumerable<PlayerReadDto>>> GetAllTeamPlayers(int teamId)
     {
         try
         {
             var players = await teamService.GetALLTeamPlayers(teamId);
-            var dtos = players.Select(p => new PlayerReadDto
-            {
-                Id = p.Id,
-                Name = p.Name,
-                MarketValue = p.MarketValue,
-                TeamReadDto = new TeamReadDto
-                {
-                    Id = p.TeamId,
-                    Name = string.Empty,
-                    Points = null
-                }
-            });
-            return Ok(dtos);
+            return Ok(players);
         }
         catch (Exception ex)
         {
@@ -81,16 +100,12 @@ public class TeamController : Controller
         }
     }
     [HttpGet("teams")]
+    [SwaggerOperation(Summary = "Get all teams", Description = "Returns a list of all teams.")]
     public async Task<ActionResult<IEnumerable<TeamReadDto>>> GetAllTeams()
     {
         var teams = await teamService.GetAllTeams();
-        var dtos = teams.Select(t => new TeamReadDto
-        {
-            Id = t.Id,
-            Name = t.Name,
-            Points = t.Points
-        });
-        return Ok(dtos);
+       
+        return Ok(teams);
     }
     public async Task<IActionResult> Index()
     {

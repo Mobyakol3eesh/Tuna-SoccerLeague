@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace web_assignment.Migrations
 {
     [DbContext(typeof(TunaLeagueContext))]
-    [Migration("20260321125510_InitalCreate")]
-    partial class InitalCreate
+    [Migration("20260321194321_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,18 +47,19 @@ namespace web_assignment.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("TeamId")
+                        .IsUnique();
 
                     b.ToTable("Coaches");
                 });
 
             modelBuilder.Entity("Match", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("ID"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime(6)");
@@ -67,7 +68,7 @@ namespace web_assignment.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Matches");
                 });
@@ -80,16 +81,29 @@ namespace web_assignment.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AwayTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AwayTeamScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeTeamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeTeamScore")
+                        .HasColumnType("int");
+
                     b.Property<int>("MatchId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeamId")
+                    b.Property<int?>("TeamId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AwayTeamId");
+
+                    b.HasIndex("HomeTeamId");
 
                     b.HasIndex("MatchId");
 
@@ -113,6 +127,10 @@ namespace web_assignment.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -153,7 +171,8 @@ namespace web_assignment.Migrations
 
                     b.HasIndex("MatchId");
 
-                    b.HasIndex("PlayerId");
+                    b.HasIndex("PlayerId")
+                        .IsUnique();
 
                     b.ToTable("PlayerStats");
                 });
@@ -181,35 +200,47 @@ namespace web_assignment.Migrations
             modelBuilder.Entity("Coach", b =>
                 {
                     b.HasOne("Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId");
+                        .WithOne("Coach")
+                        .HasForeignKey("Coach", "TeamId");
 
                     b.Navigation("Team");
                 });
 
             modelBuilder.Entity("MatchTeam", b =>
                 {
+                    b.HasOne("Team", "AwayTeam")
+                        .WithMany()
+                        .HasForeignKey("AwayTeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Team", "HomeTeam")
+                        .WithMany()
+                        .HasForeignKey("HomeTeamId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Match", "Match")
                         .WithMany()
                         .HasForeignKey("MatchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Team", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("TeamId");
+
+                    b.Navigation("AwayTeam");
+
+                    b.Navigation("HomeTeam");
 
                     b.Navigation("Match");
-
-                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("Player", b =>
                 {
                     b.HasOne("Team", "Team")
-                        .WithMany()
+                        .WithMany("Players")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -226,14 +257,28 @@ namespace web_assignment.Migrations
                         .IsRequired();
 
                     b.HasOne("Player", "Player")
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
+                        .WithOne("PlayerStats")
+                        .HasForeignKey("PlayerStats", "PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Match");
 
                     b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("Player", b =>
+                {
+                    b.Navigation("PlayerStats");
+                });
+
+            modelBuilder.Entity("Team", b =>
+                {
+                    b.Navigation("Coach");
+
+                    b.Navigation("Matches");
+
+                    b.Navigation("Players");
                 });
 #pragma warning restore 612, 618
         }

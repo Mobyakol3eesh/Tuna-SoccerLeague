@@ -1,6 +1,7 @@
 
 
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 public class PlayerController : Controller
 {
@@ -12,6 +13,7 @@ public class PlayerController : Controller
     }
 
     [HttpGet("players")]
+    [SwaggerOperation(Summary = "Get all players", Description = "Returns a list of all players with their basic details and team name.")]
     public async Task<ActionResult<IEnumerable<PlayerReadDto>>> GetAllPlayers()
     {
         var players = await playerService.GetAllPlayers();
@@ -19,6 +21,7 @@ public class PlayerController : Controller
     }
 
     [HttpGet("players/{id}")]
+    [SwaggerOperation(Summary = "Get player by id", Description = "Returns a single player's details by id.")]
     public async Task<ActionResult<PlayerReadDto>> GetPlayerDetailsById(int id)
     {
         try
@@ -33,16 +36,85 @@ public class PlayerController : Controller
 
     }
     [HttpPost("players")]
+    [SwaggerOperation(Summary = "Create player", Description = "Creates a new player record.")]
     public async Task<ActionResult> AddPlayer([FromBody] CreatePlayerDto dto)
     {
         try
         {
-            await playerService.AddPlayerAsync(dto);
+            await playerService.AddPlayer(dto);
             return Ok("Player added successfully.");
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex.ToClientMessage());
+        }
+    }
+
+    [HttpPut("players/{id}")]
+    [SwaggerOperation(Summary = "Update player", Description = "Updates an existing player by id.")]
+    public async Task<ActionResult> UpdatePlayer(int id, [FromBody] UpdatePlayerDto dto)
+    {
+        try
+        {
+            await playerService.UpdatePlayer(id, dto);
+            return Ok("Player updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.ToClientMessage());
+        }
+    }
+
+    [HttpGet("players/player-stats")]
+    [SwaggerOperation(Summary = "Get all player stats", Description = "Returns all player statistics entries.")]
+    public async Task<ActionResult<IEnumerable<PlayerStatsReadDto>>> GetAllPlayerStats()
+    {
+        var playerStats = await playerService.GetAllPlayerStats();
+        return Ok(playerStats);
+    }
+
+    [HttpGet("players/player-stats/{id}")]
+    [SwaggerOperation(Summary = "Get player stats by id", Description = "Returns one player stats record by id.")]
+    public async Task<ActionResult<PlayerStatsReadDto>> GetPlayerStatsById(int id)
+    {
+        try
+        {
+            var playerStats = await playerService.GetPlayerStatsById(id);
+            return Ok(playerStats);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
+
+    [HttpPost("players/player-stats")]
+    [SwaggerOperation(Summary = "Create player stats", Description = "Creates a new player stats record for a specific player and match.")]
+    public async Task<ActionResult> AddPlayerStats([FromBody] CreatePlayerStatsDto dto)
+    {
+        try
+        {
+            await playerService.AddPlayerStats(dto);
+            return Ok("Player stats added successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.ToClientMessage());
+        }
+    }
+
+    [HttpPut("players/player-stats/{id}")]
+    [SwaggerOperation(Summary = "Update player stats", Description = "Updates an existing player stats record by id.")]
+    public async Task<ActionResult> UpdatePlayerStats(int id, [FromBody] UpdatePlayerStatsDto dto)
+    {
+        try
+        {
+            await playerService.UpdatePlayerStats(id, dto);
+            return Ok("Player stats updated successfully.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.ToClientMessage());
         }
     }
 

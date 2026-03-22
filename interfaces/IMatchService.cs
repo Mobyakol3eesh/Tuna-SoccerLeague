@@ -1,7 +1,8 @@
 
-interface IMatchService
+public interface IMatchService
 {
-    Task<IEnumerable<Match>> GetAllMatches();
-    Task<Match> GetMatchDetailsById(int id);
-    Task<Match> CreateMatch(DateTime date, int homeTeamId, int awayTeamId, int homeTeamScore, int awayTeamScore, String location);
+    Task<IEnumerable<MatchReadDto>> GetAllMatches();
+    Task<MatchReadDto> GetMatchDetailsById(int id);
+    Task CreateMatch(CreateMatchDto dto);
+    Task UpdateMatch(int id, UpdateMatchDto dto);
 }
