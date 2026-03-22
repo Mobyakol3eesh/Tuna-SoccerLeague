@@ -25,14 +25,19 @@ dotnet add package Swashbuckle.AspNetCore.Annotations
 dotnet add package DotNetEnv
 ```
 
-4. Configure application settings in appsettings.json:
+4. Configure appsettings.json:
 - Add `ConnectionStrings:DefaultConnection`
-- Add `Jwt` settings (`Key`, `Issuer`, `Audience`, `ExpiryMinutes`)
 
-5. Set database password environment variable:
+5. Create a `.env` file in the project root:
 ```bash
-set DB_PASSWORD=your_password_here
+DB_PASSWORD=your_password_here
+JWT_KEY=your_jwt_secret_here
+JWT_ISSUER=TunaLeagueAPI
+JWT_AUDIENCE=TunaLeagueClients
+JWT_EXPIRY_MINUTES=120
 ```
+
+The app loads `.env` automatically on startup using DotNetEnv.
 
 6. Create and apply EF Core migrations:
 ```bash

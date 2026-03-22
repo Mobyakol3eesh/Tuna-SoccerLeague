@@ -7,9 +7,9 @@ publish/
 .env
 
 # User secrets
-appsettings.json
+
 appsettings.Production.json
-appsettings.Development.json
+
 
 # Visual Studio
 .vs/

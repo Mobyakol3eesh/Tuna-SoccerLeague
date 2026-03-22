@@ -56,11 +56,7 @@ public class AuthController : ControllerBase
 
     private string GenerateToken(string username, string role)
     {
-        var jwt = configuration.GetSection("Jwt");
-        var key = jwt["Key"] ?? throw new InvalidOperationException("JWT key is not configured.");
-        var issuer = jwt["Issuer"] ?? throw new InvalidOperationException("JWT issuer is not configured.");
-        var audience = jwt["Audience"] ?? throw new InvalidOperationException("JWT audience is not configured.");
-        var expiryMinutes = int.TryParse(jwt["ExpiryMinutes"], out var minutes) ? minutes : 120;
+        var jwt = AppConfiguration.LoadJwtConfig(configuration);
 
         var claims = new[]
         {
@@ -69,15 +65,15 @@ public class AuthController : ControllerBase
         };
 
         var credentials = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key)),
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
             SecurityAlgorithms.HmacSha256
         );
 
         var token = new JwtSecurityToken(
-            issuer: issuer,
-            audience: audience,
+            issuer: jwt.Issuer,
+            audience: jwt.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+            expires: DateTime.UtcNow.AddMinutes(jwt.ExpiryMinutes),
             signingCredentials: credentials
         );
 
