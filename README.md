@@ -24,7 +24,7 @@ dotnet tool install --global dotnet-ef
 1. Clone the repository and move into the project folder.
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Mobyakol3eesh/Tuna-SoccerLeague.git
 cd Tuna-SoccerLeague
 ```
 
