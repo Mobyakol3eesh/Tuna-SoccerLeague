@@ -12,7 +12,7 @@ const NavBar: React.FC = () => {
   }
 
   return (
-    <nav className="nav">
+    <nav className="nav" aria-label="Primary">
       <div className="nav-left">
         {auth.isAuthenticated && (
           <Link to="/">Home</Link>
@@ -40,7 +40,7 @@ const NavBar: React.FC = () => {
       </div>
       <div className="nav-right">
         {auth.loading ? (
-          <span>Checking...</span>
+          <span aria-live="polite">Checking...</span>
         ) : auth.isAuthenticated ? (
           <>
             <span>{auth.role ?? 'User'}</span>

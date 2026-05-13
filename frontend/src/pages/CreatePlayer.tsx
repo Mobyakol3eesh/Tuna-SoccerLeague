@@ -61,22 +61,47 @@ export const CreatePlayer: React.FC = () => {
         <Link to="/admin/players">Back to Players</Link>
       </div>
       <form onSubmit={submit} className="stack">
-        <label>Name</label>
-        <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Name" />
-        <label>Age</label>
-        <input type="number" value={form.age} onChange={(e) => setForm({ ...form, age: Number(e.target.value) })} />
-        <label>Position</label>
-        <input value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} placeholder="Position" />
-        <label>Market value</label>
-        <input type="number" value={form.marketValue} onChange={(e) => setForm({ ...form, marketValue: Number(e.target.value) })} />
-        <label>Team ID</label>
-        <input type="number" value={form.teamId} onChange={(e) => setForm({ ...form, teamId: Number(e.target.value) })} />
+        <label htmlFor="create-player-name">Name</label>
+        <input
+          id="create-player-name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          placeholder="Name"
+        />
+        <label htmlFor="create-player-age">Age</label>
+        <input
+          id="create-player-age"
+          type="number"
+          value={form.age}
+          onChange={(e) => setForm({ ...form, age: Number(e.target.value) })}
+        />
+        <label htmlFor="create-player-position">Position</label>
+        <input
+          id="create-player-position"
+          value={form.position}
+          onChange={(e) => setForm({ ...form, position: e.target.value })}
+          placeholder="Position"
+        />
+        <label htmlFor="create-player-market">Market value</label>
+        <input
+          id="create-player-market"
+          type="number"
+          value={form.marketValue}
+          onChange={(e) => setForm({ ...form, marketValue: Number(e.target.value) })}
+        />
+        <label htmlFor="create-player-team">Team ID</label>
+        <input
+          id="create-player-team"
+          type="number"
+          value={form.teamId}
+          onChange={(e) => setForm({ ...form, teamId: Number(e.target.value) })}
+        />
         <div className="button-row">
           <button type="submit" disabled={loading}>{loading ? 'Saving...' : 'Create Player'}</button>
           <button type="button" onClick={() => navigate('/admin/players')} disabled={loading}>Cancel</button>
         </div>
-        {success && <p className="success">{success}</p>}
-        {error && <p className="error">{error}</p>}
+        {success && <p className="success" role="status">{success}</p>}
+        {error && <p className="error" role="alert">{error}</p>}
       </form>
     </div>
   )

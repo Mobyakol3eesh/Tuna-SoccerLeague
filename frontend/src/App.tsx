@@ -33,7 +33,7 @@ function App() {
   return (
     <div className="app-shell">
       <NavBar />
-      <main className="container">
+      <main id="main-content" className="container" tabIndex={-1}>
         <Routes>
           <Route path="/" element={
             <ProtectedRoute>

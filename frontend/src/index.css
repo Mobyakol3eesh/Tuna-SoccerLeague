@@ -4,14 +4,15 @@
   --bg: #f6f2ea;
   --surface: #ffffff;
   --ink: #1b1b1f;
-  --muted: #5b5864;
-  --accent: #d64933;
-  --accent-2: #2a9d8f;
+  --muted: #4a4654;
+  --accent: #b03827;
+  --accent-2: #1f7a6d;
   --line: #e1d9cf;
   --shadow: 0 10px 30px rgba(30, 30, 30, 0.08);
   --radius: 14px;
   --sans: 'Space Grotesk', system-ui, sans-serif;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --focus: #1f6feb;
 }
 
 * { box-sizing: border-box; }
@@ -21,6 +22,7 @@ html, body, #root { height: 100%; }
 body {
   margin: 0;
   font-family: var(--sans);
+  line-height: 1.5;
   color: var(--ink);
   background:
     radial-gradient(1000px 500px at 10% 0%, rgba(214, 73, 51, 0.12), transparent 60%),
@@ -53,7 +55,33 @@ body::after {
   background: rgba(42, 157, 143, 0.25);
 }
 
-a { color: var(--ink); text-decoration: none; }
+a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.nav a,
+.button-row a {
+  text-decoration: none;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0.5rem;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  z-index: 10;
+}
+
+.skip-link:focus {
+  left: 1rem;
+}
 
 .container {
   max-width: 1120px;
@@ -88,6 +116,11 @@ a { color: var(--ink); text-decoration: none; }
   border-radius: 999px;
   padding: 0.35rem 0.8rem;
   cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .page {
@@ -134,6 +167,16 @@ a { color: var(--ink); text-decoration: none; }
   background: var(--accent-2);
   color: #fff;
   cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.tab:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .button-row {
@@ -198,4 +241,13 @@ a { color: var(--ink); text-decoration: none; }
 @media (max-width: 900px) {
   .nav { flex-direction: column; align-items: flex-start; }
   .nav-left a, .nav-right a { margin-right: 0.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

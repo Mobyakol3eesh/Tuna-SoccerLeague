@@ -179,9 +179,13 @@ export const LeagueDashboard: React.FC = () => {
         <section className="card">
           <div className="card-header">
             <h3>Matches</h3>
-            <div className="tab-group">
+            <div className="tab-group" role="tablist" aria-label="Match filters">
               <button
                 type="button"
+                id="matches-tab-upcoming"
+                role="tab"
+                aria-selected={matchTab === 'upcoming'}
+                aria-controls="matches-panel"
                 className={matchTab === 'upcoming' ? 'tab active' : 'tab'}
                 onClick={() => setMatchTab('upcoming')}
               >
@@ -189,6 +193,10 @@ export const LeagueDashboard: React.FC = () => {
               </button>
               <button
                 type="button"
+                id="matches-tab-today"
+                role="tab"
+                aria-selected={matchTab === 'today'}
+                aria-controls="matches-panel"
                 className={matchTab === 'today' ? 'tab active' : 'tab'}
                 onClick={() => setMatchTab('today')}
               >
@@ -196,6 +204,10 @@ export const LeagueDashboard: React.FC = () => {
               </button>
               <button
                 type="button"
+                id="matches-tab-played"
+                role="tab"
+                aria-selected={matchTab === 'played'}
+                aria-controls="matches-panel"
                 className={matchTab === 'played' ? 'tab active' : 'tab'}
                 onClick={() => setMatchTab('played')}
               >
@@ -203,7 +215,12 @@ export const LeagueDashboard: React.FC = () => {
               </button>
             </div>
           </div>
-          <div className="scrollable">
+          <div
+            className="scrollable"
+            role="tabpanel"
+            id="matches-panel"
+            aria-labelledby={`matches-tab-${matchTab}`}
+          >
             <ul className="match-list">
               {activeMatches.map((match) => (
                 <li key={match.id}>

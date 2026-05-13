@@ -40,13 +40,26 @@ export const Login: React.FC = () => {
     <div className="page">
       <h2>Login</h2>
       <form onSubmit={submit}>
-        <label>Username</label>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
-        <label>Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <label htmlFor="login-username">Username</label>
+        <input
+          id="login-username"
+          name="username"
+          autoComplete="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <label htmlFor="login-password">Password</label>
+        <input
+          id="login-password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button type="submit">Login</button>
       </form>
-      {error && <div className="error">{error}</div>}
+      {error && <div className="error" role="alert">{error}</div>}
     </div>
   )
 }

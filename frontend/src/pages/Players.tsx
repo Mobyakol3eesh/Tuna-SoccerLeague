@@ -22,7 +22,8 @@ export const Players: React.FC<{ readOnly?: boolean }> = ({ readOnly = false }) 
 
   useEffect(() => { load() }, [])
 
-  const saveEdit = async () => {
+  const saveEdit = async (e: React.FormEvent) => {
+    e.preventDefault()
     if (!editing) return
     setSaving(true)
     setError(null)
@@ -102,23 +103,49 @@ export const Players: React.FC<{ readOnly?: boolean }> = ({ readOnly = false }) 
       <div className="split-horizontal">
         {!readOnly && editing && (
           <form onSubmit={saveEdit}>
-            <label>Name</label>
-            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Name" />
-            <label>Age</label>
-            <input type="number" value={form.age} onChange={(e) => setForm({ ...form, age: Number(e.target.value) })} />
-            <label>Position</label>
-            <input value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} placeholder="Position" />
-            <label>Market value</label>
-            <input type="number" value={form.marketValue} onChange={(e) => setForm({ ...form, marketValue: Number(e.target.value) })} />
-            <label>Team ID</label>
-            <input type="number" value={form.teamID} onChange={(e) => setForm({ ...form, teamID: Number(e.target.value) })} placeholder="Team ID" />
-            <button type="button" onClick={(e) => { e.preventDefault(); saveEdit(e as any) }}>Save Player</button>
+            <label htmlFor="player-name">Name</label>
+            <input
+              id="player-name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="Name"
+            />
+            <label htmlFor="player-age">Age</label>
+            <input
+              id="player-age"
+              type="number"
+              value={form.age}
+              onChange={(e) => setForm({ ...form, age: Number(e.target.value) })}
+            />
+            <label htmlFor="player-position">Position</label>
+            <input
+              id="player-position"
+              value={form.position}
+              onChange={(e) => setForm({ ...form, position: e.target.value })}
+              placeholder="Position"
+            />
+            <label htmlFor="player-market-value">Market value</label>
+            <input
+              id="player-market-value"
+              type="number"
+              value={form.marketValue}
+              onChange={(e) => setForm({ ...form, marketValue: Number(e.target.value) })}
+            />
+            <label htmlFor="player-team-id">Team ID</label>
+            <input
+              id="player-team-id"
+              type="number"
+              value={form.teamID}
+              onChange={(e) => setForm({ ...form, teamID: Number(e.target.value) })}
+              placeholder="Team ID"
+            />
+            <button type="submit">Save Player</button>
             <button type="button" onClick={() => { setEditing(null); setForm({ ...emptyForm }) }}>
               Cancel
             </button>
-            {saving && <p>Saving...</p>}
-            {success && <p className="success">{success}</p>}
-            {error && <p className="error">{error}</p>}
+            {saving && <p role="status" aria-live="polite">Saving...</p>}
+            {success && <p className="success" role="status">{success}</p>}
+            {error && <p className="error" role="alert">{error}</p>}
           </form>
         )}
 

@@ -55,9 +55,9 @@ export const Goals: React.FC<{ readOnly?: boolean }> = ({ readOnly = false }) =>
             </li>
           ))}
         </ul>
-        {deleteLoading && <p>Deleting...</p>}
-        {deleteSuccess && <p className="success">{deleteSuccess}</p>}
-        {deleteError && <p className="error">{deleteError}</p>}
+        {deleteLoading && <p role="status" aria-live="polite">Deleting...</p>}
+        {deleteSuccess && <p className="success" role="status">{deleteSuccess}</p>}
+        {deleteError && <p className="error" role="alert">{deleteError}</p>}
       </div>
     </div>
   )

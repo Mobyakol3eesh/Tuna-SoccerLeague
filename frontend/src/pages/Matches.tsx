@@ -107,25 +107,55 @@ export const Matches: React.FC<{ readOnly?: boolean }> = ({ readOnly = false }) 
       <div className="split-horizontal">
         {!readOnly && editing && (
           <form onSubmit={saveEdit}>
-            <label>Date</label>
-            <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
-            <label>Location</label>
-            <input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="Location" />
-            <label>Home team ID</label>
-            <input type="number" value={form.homeTeamId} onChange={(e) => setForm({ ...form, homeTeamId: Number(e.target.value) })} />
-            <label>Away team ID</label>
-            <input type="number" value={form.awayTeamId} onChange={(e) => setForm({ ...form, awayTeamId: Number(e.target.value) })} />
-            <label>Home team score</label>
-            <input type="number" value={form.homeTeamScore} onChange={(e) => setForm({ ...form, homeTeamScore: Number(e.target.value) })} />
-            <label>Away team score</label>
-            <input type="number" value={form.awayTeamScore} onChange={(e) => setForm({ ...form, awayTeamScore: Number(e.target.value) })} />
-            <button type="button" onClick={(e) => { e.preventDefault(); saveEdit(e as any) }}>Save Match</button>
+            <label htmlFor="match-date">Date</label>
+            <input
+              id="match-date"
+              type="date"
+              value={form.date}
+              onChange={(e) => setForm({ ...form, date: e.target.value })}
+            />
+            <label htmlFor="match-location">Location</label>
+            <input
+              id="match-location"
+              value={form.location}
+              onChange={(e) => setForm({ ...form, location: e.target.value })}
+              placeholder="Location"
+            />
+            <label htmlFor="match-home-team">Home team ID</label>
+            <input
+              id="match-home-team"
+              type="number"
+              value={form.homeTeamId}
+              onChange={(e) => setForm({ ...form, homeTeamId: Number(e.target.value) })}
+            />
+            <label htmlFor="match-away-team">Away team ID</label>
+            <input
+              id="match-away-team"
+              type="number"
+              value={form.awayTeamId}
+              onChange={(e) => setForm({ ...form, awayTeamId: Number(e.target.value) })}
+            />
+            <label htmlFor="match-home-score">Home team score</label>
+            <input
+              id="match-home-score"
+              type="number"
+              value={form.homeTeamScore}
+              onChange={(e) => setForm({ ...form, homeTeamScore: Number(e.target.value) })}
+            />
+            <label htmlFor="match-away-score">Away team score</label>
+            <input
+              id="match-away-score"
+              type="number"
+              value={form.awayTeamScore}
+              onChange={(e) => setForm({ ...form, awayTeamScore: Number(e.target.value) })}
+            />
+            <button type="submit">Save Match</button>
             <button type="button" onClick={() => { setEditing(null); setForm({ ...emptyForm }) }}>
               Cancel
             </button>
-            {saving && <p>Saving...</p>}
-            {success && <p className="success">{success}</p>}
-            {error && <p className="error">{error}</p>}
+            {saving && <p role="status" aria-live="polite">Saving...</p>}
+            {success && <p className="success" role="status">{success}</p>}
+            {error && <p className="error" role="alert">{error}</p>}
           </form>
         )}
 

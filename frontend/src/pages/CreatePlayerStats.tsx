@@ -67,28 +67,68 @@ export const CreatePlayerStats: React.FC = () => {
         <Link to="/admin/player-stats">Back to Player Stats</Link>
       </div>
       <form onSubmit={submit} className="stack">
-        <label>Player ID</label>
-        <input type="number" value={form.playerId} onChange={(e) => setForm({ ...form, playerId: Number(e.target.value) })} />
-        <label>Match ID</label>
-        <input type="number" value={form.matchId} onChange={(e) => setForm({ ...form, matchId: Number(e.target.value) })} />
-        <label>Goals</label>
-        <input type="number" value={form.goals} onChange={(e) => setForm({ ...form, goals: Number(e.target.value) })} />
-        <label>Assists</label>
-        <input type="number" value={form.assists} onChange={(e) => setForm({ ...form, assists: Number(e.target.value) })} />
-        <label>Shots on target</label>
-        <input type="number" value={form.shotsOnTarget} onChange={(e) => setForm({ ...form, shotsOnTarget: Number(e.target.value) })} />
-        <label>Touches</label>
-        <input type="number" value={form.touches} onChange={(e) => setForm({ ...form, touches: Number(e.target.value) })} />
-        <label>Passes completed</label>
-        <input type="number" value={form.passesCompleted} onChange={(e) => setForm({ ...form, passesCompleted: Number(e.target.value) })} />
-        <label>Score</label>
-        <input type="number" value={form.score} onChange={(e) => setForm({ ...form, score: Number(e.target.value) })} />
+        <label htmlFor="create-stats-player">Player ID</label>
+        <input
+          id="create-stats-player"
+          type="number"
+          value={form.playerId}
+          onChange={(e) => setForm({ ...form, playerId: Number(e.target.value) })}
+        />
+        <label htmlFor="create-stats-match">Match ID</label>
+        <input
+          id="create-stats-match"
+          type="number"
+          value={form.matchId}
+          onChange={(e) => setForm({ ...form, matchId: Number(e.target.value) })}
+        />
+        <label htmlFor="create-stats-goals">Goals</label>
+        <input
+          id="create-stats-goals"
+          type="number"
+          value={form.goals}
+          onChange={(e) => setForm({ ...form, goals: Number(e.target.value) })}
+        />
+        <label htmlFor="create-stats-assists">Assists</label>
+        <input
+          id="create-stats-assists"
+          type="number"
+          value={form.assists}
+          onChange={(e) => setForm({ ...form, assists: Number(e.target.value) })}
+        />
+        <label htmlFor="create-stats-sot">Shots on target</label>
+        <input
+          id="create-stats-sot"
+          type="number"
+          value={form.shotsOnTarget}
+          onChange={(e) => setForm({ ...form, shotsOnTarget: Number(e.target.value) })}
+        />
+        <label htmlFor="create-stats-touches">Touches</label>
+        <input
+          id="create-stats-touches"
+          type="number"
+          value={form.touches}
+          onChange={(e) => setForm({ ...form, touches: Number(e.target.value) })}
+        />
+        <label htmlFor="create-stats-passes">Passes completed</label>
+        <input
+          id="create-stats-passes"
+          type="number"
+          value={form.passesCompleted}
+          onChange={(e) => setForm({ ...form, passesCompleted: Number(e.target.value) })}
+        />
+        <label htmlFor="create-stats-score">Score</label>
+        <input
+          id="create-stats-score"
+          type="number"
+          value={form.score}
+          onChange={(e) => setForm({ ...form, score: Number(e.target.value) })}
+        />
         <div className="button-row">
           <button type="submit" disabled={loading}>{loading ? 'Saving...' : 'Create Stats'}</button>
           <button type="button" onClick={() => navigate('/admin/player-stats')} disabled={loading}>Cancel</button>
         </div>
-        {success && <p className="success">{success}</p>}
-        {error && <p className="error">{error}</p>}
+        {success && <p className="success" role="status">{success}</p>}
+        {error && <p className="error" role="alert">{error}</p>}
       </form>
     </div>
   )

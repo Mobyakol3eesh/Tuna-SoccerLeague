@@ -53,14 +53,19 @@ export const CreateTeam: React.FC = () => {
         <Link to="/admin/teams">Back to Teams</Link>
       </div>
       <form onSubmit={submit} className="stack">
-        <label>Team name</label>
-        <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Team name" />
+        <label htmlFor="create-team-name">Team name</label>
+        <input
+          id="create-team-name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          placeholder="Team name"
+        />
         <div className="button-row">
           <button type="submit" disabled={loading}>{loading ? 'Saving...' : 'Create Team'}</button>
           <button type="button" onClick={() => navigate('/admin/teams')} disabled={loading}>Cancel</button>
         </div>
-        {success && <p className="success">{success}</p>}
-        {error && <p className="error">{error}</p>}
+        {success && <p className="success" role="status">{success}</p>}
+        {error && <p className="error" role="alert">{error}</p>}
       </form>
     </div>
   )

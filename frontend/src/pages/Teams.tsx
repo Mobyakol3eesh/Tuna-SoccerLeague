@@ -92,16 +92,22 @@ export const Teams: React.FC<{ readOnly?: boolean }> = ({ readOnly = false }) =>
       <div className="split-horizontal">
         {!readOnly && editing && (
           <form onSubmit={saveEdit}>
-            <label>Team name</label>
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Team name" />
-            <label>Points</label>
+            <label htmlFor="team-name">Team name</label>
             <input
+              id="team-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Team name"
+            />
+            <label htmlFor="team-points">Points</label>
+            <input
+              id="team-points"
               type="number"
               value={points}
               onChange={(e) => setPoints(Number(e.target.value))}
               placeholder="Points"
             />
-            <button type="button" onClick={(e) => { e.preventDefault(); saveEdit(e as any) }}>Save</button>
+            <button type="submit">Save</button>
             <button
               type="button"
               onClick={() => {
@@ -112,9 +118,9 @@ export const Teams: React.FC<{ readOnly?: boolean }> = ({ readOnly = false }) =>
             >
               Cancel
             </button>
-            {saving && <p>Saving...</p>}
-            {success && <p className="success">{success}</p>}
-            {error && <p className="error">{error}</p>}
+            {saving && <p role="status" aria-live="polite">Saving...</p>}
+            {success && <p className="success" role="status">{success}</p>}
+            {error && <p className="error" role="alert">{error}</p>}
           </form>
         )}
 

@@ -59,20 +59,40 @@ export const CreateCoach: React.FC = () => {
         <Link to="/admin/coaches">Back to Coaches</Link>
       </div>
       <form onSubmit={submit} className="stack">
-        <label>Name</label>
-        <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Name" />
-        <label>Age</label>
-        <input type="number" value={form.age} onChange={(e) => setForm({ ...form, age: Number(e.target.value) })} />
-        <label>Experience (years)</label>
-        <input type="number" value={form.experienceYrs} onChange={(e) => setForm({ ...form, experienceYrs: Number(e.target.value) })} />
-        <label>Team ID</label>
-        <input type="number" value={form.teamId} onChange={(e) => setForm({ ...form, teamId: Number(e.target.value) })} />
+        <label htmlFor="create-coach-name">Name</label>
+        <input
+          id="create-coach-name"
+          value={form.name}
+          onChange={(e) => setForm({ ...form, name: e.target.value })}
+          placeholder="Name"
+        />
+        <label htmlFor="create-coach-age">Age</label>
+        <input
+          id="create-coach-age"
+          type="number"
+          value={form.age}
+          onChange={(e) => setForm({ ...form, age: Number(e.target.value) })}
+        />
+        <label htmlFor="create-coach-exp">Experience (years)</label>
+        <input
+          id="create-coach-exp"
+          type="number"
+          value={form.experienceYrs}
+          onChange={(e) => setForm({ ...form, experienceYrs: Number(e.target.value) })}
+        />
+        <label htmlFor="create-coach-team">Team ID</label>
+        <input
+          id="create-coach-team"
+          type="number"
+          value={form.teamId}
+          onChange={(e) => setForm({ ...form, teamId: Number(e.target.value) })}
+        />
         <div className="button-row">
           <button type="submit" disabled={loading}>{loading ? 'Saving...' : 'Create Coach'}</button>
           <button type="button" onClick={() => navigate('/admin/coaches')} disabled={loading}>Cancel</button>
         </div>
-        {success && <p className="success">{success}</p>}
-        {error && <p className="error">{error}</p>}
+        {success && <p className="success" role="status">{success}</p>}
+        {error && <p className="error" role="alert">{error}</p>}
       </form>
     </div>
   )

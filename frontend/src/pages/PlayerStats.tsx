@@ -106,25 +106,55 @@ export const PlayerStats: React.FC<{ readOnly?: boolean }> = ({ readOnly = false
       <div className="split-horizontal">
         {!readOnly && editing && (
           <form onSubmit={submit}>
-            <label>Goals</label>
-            <input type="number" value={updateForm.goals} onChange={(e) => setUpdateForm({ ...updateForm, goals: Number(e.target.value) })} />
-            <label>Assists</label>
-            <input type="number" value={updateForm.assists} onChange={(e) => setUpdateForm({ ...updateForm, assists: Number(e.target.value) })} />
-            <label>Shots on target</label>
-            <input type="number" value={updateForm.shotsOnTarget} onChange={(e) => setUpdateForm({ ...updateForm, shotsOnTarget: Number(e.target.value) })} />
-            <label>Touches</label>
-            <input type="number" value={updateForm.touches} onChange={(e) => setUpdateForm({ ...updateForm, touches: Number(e.target.value) })} />
-            <label>Passes completed</label>
-            <input type="number" value={updateForm.passesCompleted} onChange={(e) => setUpdateForm({ ...updateForm, passesCompleted: Number(e.target.value) })} />
-            <label>Score</label>
-            <input type="number" value={updateForm.score} onChange={(e) => setUpdateForm({ ...updateForm, score: Number(e.target.value) })} />
-            <button type="button" onClick={(e) => { e.preventDefault(); submit(e as any) }}>Save Stats</button>
+            <label htmlFor="stats-goals">Goals</label>
+            <input
+              id="stats-goals"
+              type="number"
+              value={updateForm.goals}
+              onChange={(e) => setUpdateForm({ ...updateForm, goals: Number(e.target.value) })}
+            />
+            <label htmlFor="stats-assists">Assists</label>
+            <input
+              id="stats-assists"
+              type="number"
+              value={updateForm.assists}
+              onChange={(e) => setUpdateForm({ ...updateForm, assists: Number(e.target.value) })}
+            />
+            <label htmlFor="stats-sot">Shots on target</label>
+            <input
+              id="stats-sot"
+              type="number"
+              value={updateForm.shotsOnTarget}
+              onChange={(e) => setUpdateForm({ ...updateForm, shotsOnTarget: Number(e.target.value) })}
+            />
+            <label htmlFor="stats-touches">Touches</label>
+            <input
+              id="stats-touches"
+              type="number"
+              value={updateForm.touches}
+              onChange={(e) => setUpdateForm({ ...updateForm, touches: Number(e.target.value) })}
+            />
+            <label htmlFor="stats-passes">Passes completed</label>
+            <input
+              id="stats-passes"
+              type="number"
+              value={updateForm.passesCompleted}
+              onChange={(e) => setUpdateForm({ ...updateForm, passesCompleted: Number(e.target.value) })}
+            />
+            <label htmlFor="stats-score">Score</label>
+            <input
+              id="stats-score"
+              type="number"
+              value={updateForm.score}
+              onChange={(e) => setUpdateForm({ ...updateForm, score: Number(e.target.value) })}
+            />
+            <button type="submit">Save Stats</button>
             <button type="button" onClick={() => { setEditing(null); setUpdateForm({ ...emptyUpdate }) }}>
               Cancel
             </button>
-            {saving && <p>Saving...</p>}
-            {success && <p className="success">{success}</p>}
-            {error && <p className="error">{error}</p>}
+            {saving && <p role="status" aria-live="polite">Saving...</p>}
+            {success && <p className="success" role="status">{success}</p>}
+            {error && <p className="error" role="alert">{error}</p>}
           </form>
         )}
 

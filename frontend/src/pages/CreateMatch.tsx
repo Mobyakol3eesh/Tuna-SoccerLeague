@@ -64,24 +64,54 @@ export const CreateMatch: React.FC = () => {
         <Link to="/admin/matches">Back to Matches</Link>
       </div>
       <form onSubmit={submit} className="stack">
-        <label>Date</label>
-        <input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
-        <label>Location</label>
-        <input value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder="Location" />
-        <label>Home team ID</label>
-        <input type="number" value={form.homeTeamId} onChange={(e) => setForm({ ...form, homeTeamId: Number(e.target.value) })} />
-        <label>Away team ID</label>
-        <input type="number" value={form.awayTeamId} onChange={(e) => setForm({ ...form, awayTeamId: Number(e.target.value) })} />
-        <label>Home team score</label>
-        <input type="number" value={form.homeTeamScore} onChange={(e) => setForm({ ...form, homeTeamScore: Number(e.target.value) })} />
-        <label>Away team score</label>
-        <input type="number" value={form.awayTeamScore} onChange={(e) => setForm({ ...form, awayTeamScore: Number(e.target.value) })} />
+        <label htmlFor="create-match-date">Date</label>
+        <input
+          id="create-match-date"
+          type="date"
+          value={form.date}
+          onChange={(e) => setForm({ ...form, date: e.target.value })}
+        />
+        <label htmlFor="create-match-location">Location</label>
+        <input
+          id="create-match-location"
+          value={form.location}
+          onChange={(e) => setForm({ ...form, location: e.target.value })}
+          placeholder="Location"
+        />
+        <label htmlFor="create-match-home-team">Home team ID</label>
+        <input
+          id="create-match-home-team"
+          type="number"
+          value={form.homeTeamId}
+          onChange={(e) => setForm({ ...form, homeTeamId: Number(e.target.value) })}
+        />
+        <label htmlFor="create-match-away-team">Away team ID</label>
+        <input
+          id="create-match-away-team"
+          type="number"
+          value={form.awayTeamId}
+          onChange={(e) => setForm({ ...form, awayTeamId: Number(e.target.value) })}
+        />
+        <label htmlFor="create-match-home-score">Home team score</label>
+        <input
+          id="create-match-home-score"
+          type="number"
+          value={form.homeTeamScore}
+          onChange={(e) => setForm({ ...form, homeTeamScore: Number(e.target.value) })}
+        />
+        <label htmlFor="create-match-away-score">Away team score</label>
+        <input
+          id="create-match-away-score"
+          type="number"
+          value={form.awayTeamScore}
+          onChange={(e) => setForm({ ...form, awayTeamScore: Number(e.target.value) })}
+        />
         <div className="button-row">
           <button type="submit" disabled={loading}>{loading ? 'Saving...' : 'Create Match'}</button>
           <button type="button" onClick={() => navigate('/admin/matches')} disabled={loading}>Cancel</button>
         </div>
-        {success && <p className="success">{success}</p>}
-        {error && <p className="error">{error}</p>}
+        {success && <p className="success" role="status">{success}</p>}
+        {error && <p className="error" role="alert">{error}</p>}
       </form>
     </div>
   )

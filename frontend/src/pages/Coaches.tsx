@@ -95,21 +95,41 @@ export const Coaches: React.FC<{ readOnly?: boolean }> = ({ readOnly = false }) 
       <div className="split-horizontal">
         {!readOnly && editing && (
           <form onSubmit={saveEdit}>
-            <label>Name</label>
-            <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Name" />
-            <label>Age</label>
-            <input type="number" value={form.age} onChange={(e) => setForm({ ...form, age: Number(e.target.value) })} />
-            <label>Experience (years)</label>
-            <input type="number" value={form.experienceYrs} onChange={(e) => setForm({ ...form, experienceYrs: Number(e.target.value) })} />
-            <label>Team ID</label>
-            <input type="number" value={form.teamId} onChange={(e) => setForm({ ...form, teamId: Number(e.target.value) })} />
-            <button type="button" onClick={(e) => { e.preventDefault(); saveEdit(e as any) }}>Save Coach</button>
+            <label htmlFor="coach-name">Name</label>
+            <input
+              id="coach-name"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+              placeholder="Name"
+            />
+            <label htmlFor="coach-age">Age</label>
+            <input
+              id="coach-age"
+              type="number"
+              value={form.age}
+              onChange={(e) => setForm({ ...form, age: Number(e.target.value) })}
+            />
+            <label htmlFor="coach-experience">Experience (years)</label>
+            <input
+              id="coach-experience"
+              type="number"
+              value={form.experienceYrs}
+              onChange={(e) => setForm({ ...form, experienceYrs: Number(e.target.value) })}
+            />
+            <label htmlFor="coach-team-id">Team ID</label>
+            <input
+              id="coach-team-id"
+              type="number"
+              value={form.teamId}
+              onChange={(e) => setForm({ ...form, teamId: Number(e.target.value) })}
+            />
+            <button type="submit">Save Coach</button>
             <button type="button" onClick={() => { setEditing(null); setForm({ ...emptyForm }) }}>
               Cancel
             </button>
-            {saving && <p>Saving...</p>}
-            {success && <p className="success">{success}</p>}
-            {error && <p className="error">{error}</p>}
+            {saving && <p role="status" aria-live="polite">Saving...</p>}
+            {success && <p className="success" role="status">{success}</p>}
+            {error && <p className="error" role="alert">{error}</p>}
           </form>
         )}
 

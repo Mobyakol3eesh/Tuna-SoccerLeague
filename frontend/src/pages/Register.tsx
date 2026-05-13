@@ -40,13 +40,26 @@ export const Register: React.FC = () => {
     <div className="page">
       <h2>Register</h2>
       <form onSubmit={submit}>
-        <label>Username</label>
-        <input value={username} onChange={(e) => setUsername(e.target.value)} />
-        <label>Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <label htmlFor="register-username">Username</label>
+        <input
+          id="register-username"
+          name="username"
+          autoComplete="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <label htmlFor="register-password">Password</label>
+        <input
+          id="register-password"
+          name="password"
+          type="password"
+          autoComplete="new-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button type="submit">Register</button>
       </form>
-      {error && <div className="error">{error}</div>}
+      {error && <div className="error" role="alert">{error}</div>}
     </div>
   )
 }

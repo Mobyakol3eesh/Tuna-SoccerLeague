@@ -59,20 +59,40 @@ export const CreateGoal: React.FC = () => {
         <Link to="/admin/goals">Back to Goals</Link>
       </div>
       <form onSubmit={submit} className="stack">
-        <label>Player ID</label>
-        <input type="number" value={form.playerId} onChange={(e) => setForm({ ...form, playerId: Number(e.target.value) })} />
-        <label>Match ID</label>
-        <input type="number" value={form.matchId} onChange={(e) => setForm({ ...form, matchId: Number(e.target.value) })} />
-        <label>Team ID</label>
-        <input type="number" value={form.teamId} onChange={(e) => setForm({ ...form, teamId: Number(e.target.value) })} />
-        <label>Scorer Name</label>
-        <input value={form.scorerName} onChange={(e) => setForm({ ...form, scorerName: e.target.value })} placeholder="Scorer Name" />
+        <label htmlFor="create-goal-player">Player ID</label>
+        <input
+          id="create-goal-player"
+          type="number"
+          value={form.playerId}
+          onChange={(e) => setForm({ ...form, playerId: Number(e.target.value) })}
+        />
+        <label htmlFor="create-goal-match">Match ID</label>
+        <input
+          id="create-goal-match"
+          type="number"
+          value={form.matchId}
+          onChange={(e) => setForm({ ...form, matchId: Number(e.target.value) })}
+        />
+        <label htmlFor="create-goal-team">Team ID</label>
+        <input
+          id="create-goal-team"
+          type="number"
+          value={form.teamId}
+          onChange={(e) => setForm({ ...form, teamId: Number(e.target.value) })}
+        />
+        <label htmlFor="create-goal-scorer">Scorer Name</label>
+        <input
+          id="create-goal-scorer"
+          value={form.scorerName}
+          onChange={(e) => setForm({ ...form, scorerName: e.target.value })}
+          placeholder="Scorer Name"
+        />
         <div className="button-row">
           <button type="submit" disabled={loading}>{loading ? 'Saving...' : 'Create Goal'}</button>
           <button type="button" onClick={() => navigate('/admin/goals')} disabled={loading}>Cancel</button>
         </div>
-        {success && <p className="success">{success}</p>}
-        {error && <p className="error">{error}</p>}
+        {success && <p className="success" role="status">{success}</p>}
+        {error && <p className="error" role="alert">{error}</p>}
       </form>
     </div>
   )
